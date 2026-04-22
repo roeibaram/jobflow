@@ -1,0 +1,102 @@
+[
+  {
+    "id": "b78f1a90-1f7c-4f07-bca8-c1ef45567f11",
+    "companyName": "Northstar Health",
+    "roleTitle": "Frontend Developer",
+    "applicationLink": "https://careers.northstarhealth.example/frontend-developer",
+    "dateApplied": "2026-04-14",
+    "status": "Interviewing",
+    "nextAction": "Send updated availability for the next interview loop.",
+    "followUpDate": "2026-04-22",
+    "notes": "Phone screen went well. Review dashboard examples before the next round.",
+    "recruiter": {
+      "name": "Ava Reynolds",
+      "email": "ava.reynolds@northstarhealth.example",
+      "outreachDate": "2026-04-12",
+      "method": "LinkedIn",
+      "responseStatus": "Replied"
+    },
+    "createdAt": "2026-04-14T13:45:00.000Z",
+    "updatedAt": "2026-04-18T18:10:00.000Z"
+  },
+  {
+    "id": "a53f69b2-c0f2-4783-9652-baf7dd20dc4f",
+    "companyName": "BrightPath Labs",
+    "roleTitle": "Junior Full-Stack Developer",
+    "applicationLink": "https://jobs.brightpathlabs.example/junior-full-stack-developer",
+    "dateApplied": "2026-04-08",
+    "status": "Applied",
+    "nextAction": "Send a short follow-up email with two relevant project links.",
+    "followUpDate": "2026-04-20",
+    "notes": "Strong junior-level match. This one should not go cold.",
+    "recruiter": {
+      "name": "Miles Carter",
+      "email": "miles.carter@brightpathlabs.example",
+      "outreachDate": "2026-04-09",
+      "method": "Email",
+      "responseStatus": "Follow-up needed"
+    },
+    "createdAt": "2026-04-08T15:20:00.000Z",
+    "updatedAt": "2026-04-16T09:35:00.000Z"
+  },
+  {
+    "id": "e9fd5588-b907-4df9-91dd-b085e6b44b8f",
+    "companyName": "Harbor Cloud",
+    "roleTitle": "Software Engineer I",
+    "applicationLink": "https://harborcloud.example/careers/software-engineer-1",
+    "dateApplied": "2026-04-17",
+    "status": "Saved",
+    "nextAction": "Rewrite backend project bullets before applying.",
+    "followUpDate": "2026-04-21",
+    "notes": "Saved for later because the role leans a little more backend-heavy.",
+    "recruiter": {
+      "name": "",
+      "email": "",
+      "outreachDate": "",
+      "method": "Email",
+      "responseStatus": "No reply"
+    },
+    "createdAt": "2026-04-17T11:45:00.000Z",
+    "updatedAt": "2026-04-17T11:45:00.000Z"
+  },
+  {
+    "id": "27b0466d-7be4-48d8-92d5-0b6318bd4431",
+    "companyName": "Summit Ledger",
+    "roleTitle": "React Developer",
+    "applicationLink": "https://careers.summitledger.example/react-developer",
+    "dateApplied": "2026-03-28",
+    "status": "Rejected",
+    "nextAction": "",
+    "followUpDate": "",
+    "notes": "Closed out after the final round. Keep the notes for future interview prep.",
+    "recruiter": {
+      "name": "Jamie Chen",
+      "email": "jamie.chen@summitledger.example",
+      "outreachDate": "2026-03-25",
+      "method": "LinkedIn",
+      "responseStatus": "Replied"
+    },
+    "createdAt": "2026-03-28T16:40:00.000Z",
+    "updatedAt": "2026-04-03T14:00:00.000Z"
+  },
+  {
+    "id": "e52d35ef-1cf4-45ef-9fa0-1d793a499c74",
+    "companyName": "Fieldstone Commerce",
+    "roleTitle": "Product Engineer",
+    "applicationLink": "https://jobs.fieldstonecommerce.example/product-engineer",
+    "dateApplied": "2026-04-03",
+    "status": "Offer",
+    "nextAction": "Review compensation details and send back final questions.",
+    "followUpDate": "2026-04-21",
+    "notes": "Offer received. Keep salary notes and final decision details here.",
+    "recruiter": {
+      "name": "Lena Park",
+      "email": "lena.park@fieldstonecommerce.example",
+      "outreachDate": "2026-04-01",
+      "method": "Referral",
+      "responseStatus": "Replied"
+    },
+    "createdAt": "2026-04-03T12:15:00.000Z",
+    "updatedAt": "2026-04-18T17:05:00.000Z"
+  }
+]

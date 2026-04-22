@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+.app {
+  --color-surface: rgba(250, 246, 238, 0.96);
+  --color-surface-strong: #fffdf8;
+  --color-border-strong: rgba(28, 26, 23, 0.34);
+  --color-text: #1c1a17;
+  --color-muted: #6a6056;
+  --color-primary: #1d4660;
+  --color-primary-dark: #122d3d;
+  --color-primary-soft: #dce7ef;
+  --color-accent: #9c522d;
+  --color-accent-soft: #eedfd4;
+  --color-success: #385744;
+  --color-danger: #9c3c34;
+  --color-danger-soft: #f0ddd8;
+  --color-shadow: 10px 10px 0 rgba(28, 26, 23, 0.06);
+  --transition-base: 160ms ease;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-heading: 'Bitter', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  position: relative;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  background:
+    repeating-linear-gradient(180deg, rgba(28, 26, 23, 0.025) 0, rgba(28, 26, 23, 0.025) 1px, transparent 1px, transparent 36px),
+    linear-gradient(135deg, rgba(156, 82, 45, 0.11), transparent 28%),
+    linear-gradient(180deg, #f7f1e6 0%, #eee4d4 100%);
+}
+
+.app * {
+  box-sizing: border-box;
+}
+
+.app a {
+  color: inherit;
+}
+
+.app button,
+.app input,
+.app select,
+.app textarea {
+  font: inherit;
+}
+
+.app button {
+  cursor: pointer;
+}
+
+.app__container {
+  position: relative;
+  z-index: 1;
+  width: min(1220px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 56px;
+}
+
+.app__dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.95fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.app__main,
+.app__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.app__feedback,
+.app__loading {
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  box-shadow: var(--color-shadow);
+  padding: 18px 20px;
+}
+
+.app__feedback--error {
+  border-left: 6px solid var(--color-danger);
+  color: var(--color-danger);
+}
+
+.app__loading {
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+}
+
+.app__sidebar {
+  position: sticky;
+  top: 18px;
+}
+
+.app__glow {
+  position: absolute;
+  width: 340px;
+  height: 160px;
+  filter: blur(24px);
+  opacity: 0.32;
+}
+
+.app__glow--left {
+  top: 12px;
+  left: -110px;
+  transform: rotate(-18deg);
+  background: rgba(29, 70, 96, 0.16);
+}
+
+.app__glow--right {
+  top: 240px;
+  right: -130px;
+  transform: rotate(18deg);
+  background: rgba(156, 82, 45, 0.16);
+}
+
+@media (max-width: 980px) {
+  .app__dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .app__sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .app__container {
+    width: min(100% - 20px, 1220px);
+    padding-top: 22px;
+    padding-bottom: 32px;
+  }
+}
