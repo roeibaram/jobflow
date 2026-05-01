@@ -1,7 +1,7 @@
 import { statusFilterOptions } from '../../constants/options'
 import './FilterBar.css'
 
-export function FilterBar({ searchQuery, statusFilter, onSearchChange, onStatusChange, resultCount }) {
+export function FilterBar({ searchQuery, statusFilter, hasSearchOrFilter, onClearFilters, onSearchChange, onStatusChange, resultCount }) {
   return (
     <section className="filter-bar">
       <div className="filter-bar__top-row">
@@ -34,6 +34,15 @@ export function FilterBar({ searchQuery, statusFilter, onSearchChange, onStatusC
           </button>
         ))}
       </div>
+
+      {hasSearchOrFilter ? (
+        <div className="filter-bar__actions">
+          <p className="filter-bar__active-copy">Showing a filtered view.</p>
+          <button className="filter-bar__clear-button" type="button" onClick={onClearFilters}>
+            Clear search and filters
+          </button>
+        </div>
+      ) : null}
     </section>
   )
 }

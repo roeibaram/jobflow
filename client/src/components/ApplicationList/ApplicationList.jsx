@@ -2,9 +2,9 @@ import { ApplicationCard } from '../ApplicationCard/ApplicationCard'
 import { EmptyState } from '../EmptyState/EmptyState'
 import './ApplicationList.css'
 
-export function ApplicationList({ applications, hasSearchOrFilter, onEdit, onDelete }) {
+export function ApplicationList({ applications, hasSearchOrFilter, onClearFilters, onEdit, onDelete }) {
   if (!applications.length) {
-    return <EmptyState hasSearchOrFilter={hasSearchOrFilter} />
+    return <EmptyState hasSearchOrFilter={hasSearchOrFilter} onClearFilters={onClearFilters} />
   }
 
   return (

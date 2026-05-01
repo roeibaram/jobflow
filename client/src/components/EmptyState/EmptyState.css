@@ -39,3 +39,21 @@
   color: var(--color-muted);
   line-height: 1.7;
 }
+
+.empty-state__button {
+  padding: 11px 14px;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface-strong);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: transform var(--transition-base), border-color var(--transition-base), color var(--transition-base);
+}
+
+.empty-state__button:hover {
+  transform: translate(-1px, -1px);
+  border-color: var(--color-text);
+}

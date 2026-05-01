@@ -89,6 +89,11 @@ function App() {
     setEditingApplication(null)
   }
 
+  function handleClearFilters() {
+    setSearchQuery('')
+    setStatusFilter('All')
+  }
+
   const visibleApplications = useMemo(() => {
     return getFilteredApplications(applications, statusFilter, searchQuery)
   }, [applications, searchQuery, statusFilter])
@@ -111,6 +116,8 @@ function App() {
             <FilterBar
               searchQuery={searchQuery}
               statusFilter={statusFilter}
+              hasSearchOrFilter={hasSearchOrFilter}
+              onClearFilters={handleClearFilters}
               onSearchChange={setSearchQuery}
               onStatusChange={setStatusFilter}
               resultCount={visibleApplications.length}
@@ -124,6 +131,7 @@ function App() {
               <ApplicationList
                 applications={visibleApplications}
                 hasSearchOrFilter={hasSearchOrFilter}
+                onClearFilters={handleClearFilters}
                 onEdit={handleEditApplication}
                 onDelete={handleDeleteApplication}
               />
