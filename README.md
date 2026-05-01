@@ -24,18 +24,15 @@ You can run the app locally, create records, update them, delete them, and keep 
 ## Stack
 
 Frontend:
-
 - React
 - Vite
 - CSS with BEM-style class naming
 
 Backend:
-
 - Node.js
 - Express
 
 Storage:
-
 - JSON file
 
 ## Running locally
@@ -49,6 +46,18 @@ npm run dev
 
 App: [http://localhost:5173](http://localhost:5173)
 API: [http://localhost:5001](http://localhost:5001)
+
+## Deployment note
+
+Local development works without any extra setup because Vite proxies `/api` requests to the Express server.
+
+If you deploy the frontend and backend separately, add a `client/.env` file with:
+
+```bash
+VITE_API_URL=https://your-api-url.com
+```
+
+An example file is included at [client/.env.example](/Users/roeibaram/projects/jobflow/client/.env.example).
 
 ## API routes
 

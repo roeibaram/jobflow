@@ -1,4 +1,15 @@
-const APPLICATIONS_URL = '/api/applications'
+const rawApiBaseUrl = import.meta.env.VITE_API_URL || ''
+const apiBaseUrl = rawApiBaseUrl.trim().replace(/\/$/, '')
+
+function buildApiUrl(path) {
+  if (!apiBaseUrl) {
+    return path
+  }
+
+  return `${apiBaseUrl}${path}`
+}
+
+const APPLICATIONS_URL = buildApiUrl('/api/applications')
 
 async function request(url, options = {}) {
   const response = await fetch(url, {
