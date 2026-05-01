@@ -24,6 +24,42 @@ function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 }
 
+function getErrorKey(name, section) {
+  if (section === 'recruiter' && name === 'email') {
+    return 'recruiterEmail'
+  }
+
+  return name
+}
+
+function getFieldErrorMessage(fieldKey, payload) {
+  if (fieldKey === 'companyName' && !payload.companyName) {
+    return 'Company name is required.'
+  }
+
+  if (fieldKey === 'roleTitle' && !payload.roleTitle) {
+    return 'Role title is required.'
+  }
+
+  if (fieldKey === 'dateApplied' && !payload.dateApplied) {
+    return 'Date applied is required.'
+  }
+
+  if (fieldKey === 'applicationLink' && !isValidUrl(payload.applicationLink)) {
+    return 'Add a valid URL that starts with http:// or https://.'
+  }
+
+  if (fieldKey === 'recruiterEmail' && !isValidEmail(payload.recruiter.email)) {
+    return 'Recruiter email needs a valid format.'
+  }
+
+  if (fieldKey === 'nextAction' && payload.followUpDate && !payload.nextAction) {
+    return 'Add a short next step if you set a follow-up date.'
+  }
+
+  return ''
+}
+
 export function ApplicationForm({ applicationToEdit, isSubmitting, onSubmit, onCancelEdit }) {
   const [formData, setFormData] = useState(buildEmptyApplicationForm())
   const [errors, setErrors] = useState({})
@@ -35,6 +71,7 @@ export function ApplicationForm({ applicationToEdit, isSubmitting, onSubmit, onC
 
   function handleFieldChange(event) {
     const { name, value, dataset } = event.target
+    const errorKey = getErrorKey(name, dataset.section)
 
     if (dataset.section === 'recruiter') {
       setFormData((currentFormData) => ({
@@ -44,45 +81,76 @@ export function ApplicationForm({ applicationToEdit, isSubmitting, onSubmit, onC
           [name]: value
         }
       }))
-
-      return
+    } else {
+      setFormData((currentFormData) => ({
+        ...currentFormData,
+        [name]: value
+      }))
     }
 
-    setFormData((currentFormData) => ({
-      ...currentFormData,
-      [name]: value
-    }))
+    setErrors((currentErrors) => {
+      if (!currentErrors[errorKey] && !currentErrors.nextAction) {
+        return currentErrors
+      }
+
+      const nextErrors = { ...currentErrors }
+      delete nextErrors[errorKey]
+
+      if (name === 'followUpDate' || name === 'nextAction') {
+        delete nextErrors.nextAction
+      }
+
+      return nextErrors
+    })
+  }
+
+  function handleFieldBlur(event) {
+    const { name, dataset } = event.target
+    const errorKey = getErrorKey(name, dataset.section)
+    const payload = buildSubmissionPayload(formData)
+    const fieldError = getFieldErrorMessage(errorKey, payload)
+
+    setErrors((currentErrors) => {
+      const nextErrors = { ...currentErrors }
+
+      if (fieldError) {
+        nextErrors[errorKey] = fieldError
+      } else {
+        delete nextErrors[errorKey]
+      }
+
+      if (name === 'followUpDate' || name === 'nextAction') {
+        const nextActionError = getFieldErrorMessage('nextAction', payload)
+
+        if (nextActionError) {
+          nextErrors.nextAction = nextActionError
+        } else {
+          delete nextErrors.nextAction
+        }
+      }
+
+      return nextErrors
+    })
   }
 
   function validateForm(payload) {
     const nextErrors = {}
+    const fieldKeys = ['companyName', 'roleTitle', 'dateApplied', 'applicationLink', 'recruiterEmail', 'nextAction']
 
-    if (!payload.companyName) {
-      nextErrors.companyName = 'Company name is required.'
-    }
+    fieldKeys.forEach((fieldKey) => {
+      const errorMessage = getFieldErrorMessage(fieldKey, payload)
 
-    if (!payload.roleTitle) {
-      nextErrors.roleTitle = 'Role title is required.'
-    }
-
-    if (!payload.dateApplied) {
-      nextErrors.dateApplied = 'Date applied is required.'
-    }
-
-    if (!isValidUrl(payload.applicationLink)) {
-      nextErrors.applicationLink = 'Add a valid URL that starts with http:// or https://.'
-    }
-
-    if (!isValidEmail(payload.recruiter.email)) {
-      nextErrors.recruiterEmail = 'Recruiter email needs a valid format.'
-    }
-
-    if (payload.followUpDate && !payload.nextAction) {
-      nextErrors.nextAction = 'Add a short next step if you set a follow-up date.'
-    }
+      if (errorMessage) {
+        nextErrors[fieldKey] = errorMessage
+      }
+    })
 
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
+  }
+
+  function getInputClassName(errorKey) {
+    return `application-form__input${errors[errorKey] ? ' application-form__input--invalid' : ''}`
   }
 
   async function handleSubmit(event) {
@@ -100,8 +168,10 @@ export function ApplicationForm({ applicationToEdit, isSubmitting, onSubmit, onC
       if (!applicationToEdit) {
         setFormData(buildEmptyApplicationForm())
       }
-    } catch {
-      // App-level errors are shown above the list.
+    } catch (error) {
+      if (error.details) {
+        setErrors(error.details)
+      }
     }
   }
 
@@ -132,31 +202,64 @@ export function ApplicationForm({ applicationToEdit, isSubmitting, onSubmit, onC
           <div className="application-form__grid">
             <label className="application-form__field">
               <span className="application-form__label">Company name</span>
-              <input className="application-form__input" type="text" name="companyName" value={formData.companyName} onChange={handleFieldChange} />
+              <input
+                className={getInputClassName('companyName')}
+                type="text"
+                name="companyName"
+                value={formData.companyName}
+                onBlur={handleFieldBlur}
+                onChange={handleFieldChange}
+                aria-invalid={Boolean(errors.companyName)}
+              />
               {errors.companyName ? <span className="application-form__error">{errors.companyName}</span> : null}
             </label>
 
             <label className="application-form__field">
               <span className="application-form__label">Role title</span>
-              <input className="application-form__input" type="text" name="roleTitle" value={formData.roleTitle} onChange={handleFieldChange} />
+              <input
+                className={getInputClassName('roleTitle')}
+                type="text"
+                name="roleTitle"
+                value={formData.roleTitle}
+                onBlur={handleFieldBlur}
+                onChange={handleFieldChange}
+                aria-invalid={Boolean(errors.roleTitle)}
+              />
               {errors.roleTitle ? <span className="application-form__error">{errors.roleTitle}</span> : null}
             </label>
 
             <label className="application-form__field application-form__field--full">
               <span className="application-form__label">Application link</span>
-              <input className="application-form__input" type="url" name="applicationLink" placeholder="https://company.com/careers/role" value={formData.applicationLink} onChange={handleFieldChange} />
+              <input
+                className={getInputClassName('applicationLink')}
+                type="url"
+                name="applicationLink"
+                placeholder="https://company.com/careers/role"
+                value={formData.applicationLink}
+                onBlur={handleFieldBlur}
+                onChange={handleFieldChange}
+                aria-invalid={Boolean(errors.applicationLink)}
+              />
               {errors.applicationLink ? <span className="application-form__error">{errors.applicationLink}</span> : null}
             </label>
 
             <label className="application-form__field">
               <span className="application-form__label">Date applied</span>
-              <input className="application-form__input" type="date" name="dateApplied" value={formData.dateApplied} onChange={handleFieldChange} />
+              <input
+                className={getInputClassName('dateApplied')}
+                type="date"
+                name="dateApplied"
+                value={formData.dateApplied}
+                onBlur={handleFieldBlur}
+                onChange={handleFieldChange}
+                aria-invalid={Boolean(errors.dateApplied)}
+              />
               {errors.dateApplied ? <span className="application-form__error">{errors.dateApplied}</span> : null}
             </label>
 
             <label className="application-form__field">
               <span className="application-form__label">Status</span>
-              <select className="application-form__input" name="status" value={formData.status} onChange={handleFieldChange}>
+              <select className={getInputClassName('status')} name="status" value={formData.status} onChange={handleFieldChange}>
                 {formStatusOptions.map((status) => (
                   <option key={status} value={status}>
                     {status}
@@ -174,19 +277,29 @@ export function ApplicationForm({ applicationToEdit, isSubmitting, onSubmit, onC
             <label className="application-form__field application-form__field--full">
               <span className="application-form__label">Next step</span>
               <input
-                className="application-form__input"
+                className={getInputClassName('nextAction')}
                 type="text"
                 name="nextAction"
                 placeholder="Send follow-up email, prep for interview, or check in next week"
                 value={formData.nextAction}
+                onBlur={handleFieldBlur}
                 onChange={handleFieldChange}
+                aria-invalid={Boolean(errors.nextAction)}
               />
               {errors.nextAction ? <span className="application-form__error">{errors.nextAction}</span> : null}
             </label>
 
             <label className="application-form__field">
               <span className="application-form__label">Follow-up date</span>
-              <input className="application-form__input" type="date" name="followUpDate" value={formData.followUpDate} onChange={handleFieldChange} />
+              <input
+                className={getInputClassName('followUpDate')}
+                type="date"
+                name="followUpDate"
+                value={formData.followUpDate}
+                onBlur={handleFieldBlur}
+                onChange={handleFieldChange}
+                aria-invalid={Boolean(errors.followUpDate || errors.nextAction)}
+              />
             </label>
           </div>
         </div>
@@ -197,23 +310,32 @@ export function ApplicationForm({ applicationToEdit, isSubmitting, onSubmit, onC
           <div className="application-form__grid">
             <label className="application-form__field">
               <span className="application-form__label">Recruiter name</span>
-              <input className="application-form__input" type="text" name="name" data-section="recruiter" value={formData.recruiter.name} onChange={handleFieldChange} />
+              <input className={getInputClassName('name')} type="text" name="name" data-section="recruiter" value={formData.recruiter.name} onChange={handleFieldChange} />
             </label>
 
             <label className="application-form__field">
               <span className="application-form__label">Recruiter email</span>
-              <input className="application-form__input" type="email" name="email" data-section="recruiter" value={formData.recruiter.email} onChange={handleFieldChange} />
+              <input
+                className={getInputClassName('recruiterEmail')}
+                type="email"
+                name="email"
+                data-section="recruiter"
+                value={formData.recruiter.email}
+                onBlur={handleFieldBlur}
+                onChange={handleFieldChange}
+                aria-invalid={Boolean(errors.recruiterEmail)}
+              />
               {errors.recruiterEmail ? <span className="application-form__error">{errors.recruiterEmail}</span> : null}
             </label>
 
             <label className="application-form__field">
               <span className="application-form__label">Outreach date</span>
-              <input className="application-form__input" type="date" name="outreachDate" data-section="recruiter" value={formData.recruiter.outreachDate} onChange={handleFieldChange} />
+              <input className={getInputClassName('outreachDate')} type="date" name="outreachDate" data-section="recruiter" value={formData.recruiter.outreachDate} onChange={handleFieldChange} />
             </label>
 
             <label className="application-form__field">
               <span className="application-form__label">Outreach method</span>
-              <select className="application-form__input" name="method" data-section="recruiter" value={formData.recruiter.method} onChange={handleFieldChange}>
+              <select className={getInputClassName('method')} name="method" data-section="recruiter" value={formData.recruiter.method} onChange={handleFieldChange}>
                 {outreachMethodOptions.map((method) => (
                   <option key={method} value={method}>
                     {method}
@@ -224,7 +346,7 @@ export function ApplicationForm({ applicationToEdit, isSubmitting, onSubmit, onC
 
             <label className="application-form__field application-form__field--full">
               <span className="application-form__label">Response status</span>
-              <select className="application-form__input" name="responseStatus" data-section="recruiter" value={formData.recruiter.responseStatus} onChange={handleFieldChange}>
+              <select className={getInputClassName('responseStatus')} name="responseStatus" data-section="recruiter" value={formData.recruiter.responseStatus} onChange={handleFieldChange}>
                 {responseStatusOptions.map((responseStatus) => (
                   <option key={responseStatus} value={responseStatus}>
                     {responseStatus}

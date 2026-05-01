@@ -115,6 +115,18 @@
   box-shadow: inset 0 0 0 1px var(--color-primary-dark);
 }
 
+.application-form__input--invalid,
+.application-form__textarea--invalid {
+  border-color: var(--color-danger);
+  background: rgba(240, 221, 216, 0.35);
+}
+
+.application-form__input--invalid:focus,
+.application-form__textarea--invalid:focus {
+  border-color: var(--color-danger);
+  box-shadow: inset 0 0 0 1px var(--color-danger);
+}
+
 .application-form__error {
   color: var(--color-danger);
   font-size: 0.84rem;

@@ -26,7 +26,9 @@ async function request(url, options = {}) {
   const data = await response.json()
 
   if (!response.ok) {
-    throw new Error(data.message || 'Something went wrong while saving your changes.')
+    const error = new Error(data.message || 'Something went wrong while saving your changes.')
+    error.details = data.details || null
+    throw error
   }
 
   return data
