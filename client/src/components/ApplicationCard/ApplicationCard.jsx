@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { formatDisplayDate } from '../../utils/date'
 import { getFollowUpLabel, getResponseTone, getStatusTone } from '../../utils/application'
 import './ApplicationCard.css'
@@ -11,9 +12,27 @@ function getCompanyInitials(companyName) {
 }
 
 export function ApplicationCard({ application, onEdit, onDelete }) {
+  const [copyState, setCopyState] = useState('idle')
   const statusTone = getStatusTone(application.status)
   const responseTone = getResponseTone(application.recruiter?.responseStatus || 'No reply')
   const followUpLabel = getFollowUpLabel(application.followUpDate)
+
+  async function handleCopyLink() {
+    if (!application.applicationLink) {
+      return
+    }
+
+    try {
+      await navigator.clipboard.writeText(application.applicationLink)
+      setCopyState('copied')
+      window.setTimeout(() => setCopyState('idle'), 1800)
+    } catch {
+      setCopyState('failed')
+      window.setTimeout(() => setCopyState('idle'), 2200)
+    }
+  }
+
+  const copyButtonLabel = copyState === 'copied' ? 'Copied' : copyState === 'failed' ? 'Retry copy' : 'Copy link'
 
   return (
     <article className="application-card">
@@ -33,6 +52,15 @@ export function ApplicationCard({ application, onEdit, onDelete }) {
         </div>
 
         <div className="application-card__actions">
+          {application.applicationLink ? (
+            <button
+              type="button"
+              className="application-card__button application-card__button--copy"
+              onClick={handleCopyLink}
+            >
+              {copyButtonLabel}
+            </button>
+          ) : null}
           <button type="button" className="application-card__button application-card__button--secondary" onClick={() => onEdit(application)}>
             Edit
           </button>

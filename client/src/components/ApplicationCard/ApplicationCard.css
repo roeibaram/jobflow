@@ -141,6 +141,15 @@
   transform: translate(-1px, -1px);
 }
 
+.application-card__button--copy {
+  min-width: 102px;
+}
+
+.application-card__button--copy:hover {
+  border-color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+}
+
 .application-card__button--secondary:hover {
   border-color: var(--color-primary-dark);
   background: var(--color-primary-soft);
