@@ -140,6 +140,7 @@ function App() {
 
           <aside className="app__sidebar">
             <ApplicationForm
+              key={editingApplication?.id ?? 'new-application'}
               applicationToEdit={editingApplication}
               isSubmitting={isSubmitting}
               onSubmit={handleSaveApplication}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { formStatusOptions, outreachMethodOptions, responseStatusOptions } from '../../constants/options'
 import { buildEmptyApplicationForm, buildFormStateFromApplication, buildSubmissionPayload } from '../../utils/application'
 import './ApplicationForm.css'
@@ -61,13 +61,8 @@ function getFieldErrorMessage(fieldKey, payload) {
 }
 
 export function ApplicationForm({ applicationToEdit, isSubmitting, onSubmit, onCancelEdit }) {
-  const [formData, setFormData] = useState(buildEmptyApplicationForm())
+  const [formData, setFormData] = useState(() => buildFormStateFromApplication(applicationToEdit))
   const [errors, setErrors] = useState({})
-
-  useEffect(() => {
-    setFormData(buildFormStateFromApplication(applicationToEdit))
-    setErrors({})
-  }, [applicationToEdit])
 
   function handleFieldChange(event) {
     const { name, value, dataset } = event.target
