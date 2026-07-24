@@ -40,9 +40,25 @@
   background: var(--color-surface-strong);
 }
 
+.reminder-panel__item--overdue,
+.reminder-panel__item--today,
+.reminder-panel__item--soon {
+  border-left: 4px solid currentColor;
+}
+
 .reminder-panel__item--overdue {
-  border-left: 4px solid var(--color-danger);
+  color: var(--color-danger);
   background: #fcf3f0;
+}
+
+.reminder-panel__item--today {
+  color: #9a5f00;
+  background: #fff6de;
+}
+
+.reminder-panel__item--soon {
+  color: var(--color-primary-dark);
+  background: #f2f3ff;
 }
 
 .reminder-panel__item-header {
@@ -77,6 +93,12 @@
   background: var(--color-danger-soft);
 }
 
+.reminder-panel__badge--today {
+  color: #9a5f00;
+  background: #fff0bd;
+}
+
+.reminder-panel__badge--soon,
 .reminder-panel__badge--upcoming {
   color: var(--color-primary-dark);
   background: var(--color-primary-soft);
