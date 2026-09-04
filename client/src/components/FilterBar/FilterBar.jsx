@@ -2,6 +2,11 @@ import { statusFilterOptions } from '../../constants/options'
 import './FilterBar.css'
 
 export function FilterBar({ searchQuery, statusFilter, hasSearchOrFilter, onClearFilters, onSearchChange, onStatusChange, resultCount }) {
+  const activeFilterLabels = [
+    statusFilter !== 'All' ? `Status: ${statusFilter}` : null,
+    searchQuery.trim() ? `Search: ${searchQuery.trim()}` : null
+  ].filter(Boolean)
+
   return (
     <section className="filter-bar">
       <div className="filter-bar__top-row">
@@ -34,6 +39,14 @@ export function FilterBar({ searchQuery, statusFilter, hasSearchOrFilter, onClea
           </button>
         ))}
       </div>
+
+      {activeFilterLabels.length ? (
+        <ul className="filter-bar__active-list" aria-label="Active pipeline filters">
+          {activeFilterLabels.map((label) => (
+            <li key={label}>{label}</li>
+          ))}
+        </ul>
+      ) : null}
 
       {hasSearchOrFilter ? (
         <div className="filter-bar__actions">
