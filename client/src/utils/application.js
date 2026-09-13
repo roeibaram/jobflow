@@ -65,10 +65,33 @@ export function buildSubmissionPayload(formData) {
   }
 }
 
-export function getFilteredApplications(applications, statusFilter, searchQuery) {
+function sortApplications(applications, sortMode) {
+  return applications.sort((firstApplication, secondApplication) => {
+    if (sortMode === 'followUp') {
+      const firstDate = firstApplication.followUpDate || '9999-12-31'
+      const secondDate = secondApplication.followUpDate || '9999-12-31'
+
+      return firstDate.localeCompare(secondDate)
+    }
+
+    if (sortMode === 'company') {
+      return (firstApplication.companyName || '').localeCompare(secondApplication.companyName || '')
+    }
+
+    const dateComparison = (secondApplication.dateApplied || '').localeCompare(firstApplication.dateApplied || '')
+
+    if (dateComparison !== 0) {
+      return dateComparison
+    }
+
+    return (secondApplication.updatedAt || '').localeCompare(firstApplication.updatedAt || '')
+  })
+}
+
+export function getFilteredApplications(applications, statusFilter, searchQuery, sortMode = 'recent') {
   const normalizedQuery = searchQuery.trim().toLowerCase()
 
-  return [...applications]
+  const filteredApplications = [...applications]
     .filter((application) => {
       if (statusFilter === 'All') {
         return true
@@ -95,15 +118,8 @@ export function getFilteredApplications(applications, statusFilter, searchQuery)
 
       return searchableText.includes(normalizedQuery)
     })
-    .sort((firstApplication, secondApplication) => {
-      const dateComparison = (secondApplication.dateApplied || '').localeCompare(firstApplication.dateApplied || '')
 
-      if (dateComparison !== 0) {
-        return dateComparison
-      }
-
-      return (secondApplication.updatedAt || '').localeCompare(firstApplication.updatedAt || '')
-    })
+  return sortApplications(filteredApplications, sortMode)
 }
 
 export function getApplicationStats(applications) {

@@ -1,7 +1,17 @@
-import { statusFilterOptions } from '../../constants/options'
+import { applicationSortOptions, statusFilterOptions } from '../../constants/options'
 import './FilterBar.css'
 
-export function FilterBar({ searchQuery, statusFilter, hasSearchOrFilter, onClearFilters, onSearchChange, onStatusChange, resultCount }) {
+export function FilterBar({
+  searchQuery,
+  sortMode,
+  statusFilter,
+  hasSearchOrFilter,
+  onClearFilters,
+  onSearchChange,
+  onSortChange,
+  onStatusChange,
+  resultCount
+}) {
   const activeFilterLabels = [
     statusFilter !== 'All' ? `Status: ${statusFilter}` : null,
     searchQuery.trim() ? `Search: ${searchQuery.trim()}` : null
@@ -15,16 +25,29 @@ export function FilterBar({ searchQuery, statusFilter, hasSearchOrFilter, onClea
           <p className="filter-bar__caption">{resultCount} role{resultCount === 1 ? '' : 's'} visible</p>
         </div>
 
-        <label className="filter-bar__search-field">
-          <span className="filter-bar__search-label">Search</span>
-          <input
-            className="filter-bar__search-input"
-            type="search"
-            placeholder="Company, role, recruiter, notes"
-            value={searchQuery}
-            onChange={(event) => onSearchChange(event.target.value)}
-          />
-        </label>
+        <div className="filter-bar__controls">
+          <label className="filter-bar__search-field">
+            <span className="filter-bar__control-label">Search</span>
+            <input
+              className="filter-bar__search-input"
+              type="search"
+              placeholder="Company, role, recruiter, notes"
+              value={searchQuery}
+              onChange={(event) => onSearchChange(event.target.value)}
+            />
+          </label>
+
+          <label className="filter-bar__sort-field">
+            <span className="filter-bar__control-label">Sort</span>
+            <select className="filter-bar__sort-select" value={sortMode} onChange={(event) => onSortChange(event.target.value)}>
+              {applicationSortOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
 
       <div className="filter-bar__chips" aria-label="Filter by status">

@@ -13,6 +13,7 @@ function App() {
   const [applications, setApplications] = useState([])
   const [statusFilter, setStatusFilter] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const [sortMode, setSortMode] = useState('recent')
   const [editingApplication, setEditingApplication] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -95,8 +96,8 @@ function App() {
   }
 
   const visibleApplications = useMemo(() => {
-    return getFilteredApplications(applications, statusFilter, searchQuery)
-  }, [applications, searchQuery, statusFilter])
+    return getFilteredApplications(applications, statusFilter, searchQuery, sortMode)
+  }, [applications, searchQuery, sortMode, statusFilter])
 
   const stats = useMemo(() => getApplicationStats(applications), [applications])
   const reminders = useMemo(() => getReminderItems(applications), [applications])
@@ -115,10 +116,12 @@ function App() {
           <main className="app__main">
             <FilterBar
               searchQuery={searchQuery}
+              sortMode={sortMode}
               statusFilter={statusFilter}
               hasSearchOrFilter={hasSearchOrFilter}
               onClearFilters={handleClearFilters}
               onSearchChange={setSearchQuery}
+              onSortChange={setSortMode}
               onStatusChange={setStatusFilter}
               resultCount={visibleApplications.length}
             />
