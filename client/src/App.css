@@ -72,6 +72,19 @@
   gap: 22px;
 }
 
+.app__main > *,
+.app__sidebar > * {
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.app__main > *:hover,
+.app__sidebar > *:hover {
+  transform: translateY(-2px);
+  box-shadow: 12px 12px 0 rgba(28, 26, 23, 0.08);
+}
+
 .app__feedback,
 .app__loading {
   border: 1px solid var(--color-border-strong);

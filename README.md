@@ -35,6 +35,25 @@ Backend:
 Storage:
 - JSON file
 
+## Data model
+
+Each application record keeps the job details and outreach details together so the dashboard matches a real job-search workflow.
+
+Main fields:
+
+- company name
+- role title
+- application link
+- date applied
+- status
+- recruiter name and email
+- outreach date and method
+- response status
+- next step and follow-up date
+- notes
+
+The backend currently stores records in a local JSON file. The API layer is kept separate from the storage helper so the project can move to MongoDB later without rewriting the React components.
+
 ## Running locally
 
 From the project root:
@@ -66,3 +85,10 @@ An example file is included at [client/.env.example](/Users/roeibaram/projects/j
 - `POST /api/applications`
 - `PUT /api/applications/:id`
 - `DELETE /api/applications/:id`
+
+## Next improvements
+
+- add authentication so each user has their own tracker
+- move storage from JSON to MongoDB
+- add basic tests around the API routes
+- add optional export to CSV for job-search records
