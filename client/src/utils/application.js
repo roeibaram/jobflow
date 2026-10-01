@@ -67,6 +67,16 @@ export function buildSubmissionPayload(formData) {
 
 function sortApplications(applications, sortMode) {
   return applications.sort((firstApplication, secondApplication) => {
+    if (sortMode === 'oldest') {
+      const dateComparison = (firstApplication.dateApplied || '').localeCompare(secondApplication.dateApplied || '')
+
+      if (dateComparison !== 0) {
+        return dateComparison
+      }
+
+      return (firstApplication.updatedAt || '').localeCompare(secondApplication.updatedAt || '')
+    }
+
     if (sortMode === 'followUp') {
       const firstDate = firstApplication.followUpDate || '9999-12-31'
       const secondDate = secondApplication.followUpDate || '9999-12-31'

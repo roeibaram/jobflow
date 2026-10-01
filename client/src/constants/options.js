@@ -2,6 +2,7 @@ export const statusFilterOptions = ['All', 'Applied', 'Interviewing', 'Rejected'
 
 export const applicationSortOptions = [
   { value: 'recent', label: 'Newest applied' },
+  { value: 'oldest', label: 'Oldest applied' },
   { value: 'followUp', label: 'Follow-up date' },
   { value: 'company', label: 'Company A-Z' }
 ]
