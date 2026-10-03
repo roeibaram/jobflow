@@ -117,6 +117,7 @@ export function getFilteredApplications(applications, statusFilter, searchQuery,
       const searchableText = [
         application.companyName,
         application.roleTitle,
+        application.applicationLink,
         application.nextAction,
         application.notes,
         application.recruiter?.name,
