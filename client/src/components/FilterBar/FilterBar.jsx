@@ -31,7 +31,7 @@ export function FilterBar({
             <input
               className="filter-bar__search-input"
               type="search"
-              placeholder="Company, role, recruiter, posting link, notes"
+              placeholder="Company, role, recruiter, outreach, link, notes"
               value={searchQuery}
               onChange={(event) => onSearchChange(event.target.value)}
             />

@@ -121,7 +121,10 @@ export function getFilteredApplications(applications, statusFilter, searchQuery,
         application.nextAction,
         application.notes,
         application.recruiter?.name,
-        application.recruiter?.email
+        application.recruiter?.email,
+        application.recruiter?.outreachDate,
+        application.recruiter?.method,
+        application.recruiter?.responseStatus
       ]
         .filter(Boolean)
         .join(' ')
