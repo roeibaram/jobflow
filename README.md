@@ -14,6 +14,7 @@ Instead of spreading everything across notes, spreadsheets, and saved links, the
 - set a next step and follow-up date
 - see overdue and upcoming follow-ups in a reminder panel
 - view quick stats for total applications, interviews, offers, and follow-ups
+- export all tracked applications, including recruiter details, to CSV
 
 ## Current state
 
@@ -66,6 +67,12 @@ npm run dev
 App: [http://localhost:5173](http://localhost:5173)
 API: [http://localhost:5001](http://localhost:5001)
 
+Run the client tests with:
+
+```bash
+npm run test --prefix client
+```
+
 ## Deployment note
 
 Local development works without any extra setup because Vite proxies `/api` requests to the Express server.
@@ -91,4 +98,3 @@ An example file is included at [client/.env.example](/Users/roeibaram/projects/j
 - add authentication so each user has their own tracker
 - move storage from JSON to MongoDB
 - add basic tests around the API routes
-- add optional export to CSV for job-search records

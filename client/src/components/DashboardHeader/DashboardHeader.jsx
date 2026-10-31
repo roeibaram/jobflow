@@ -1,6 +1,6 @@
 import './DashboardHeader.css'
 
-export function DashboardHeader() {
+export function DashboardHeader({ exportMessage, isExportDisabled, onExport }) {
   return (
     <section className="dashboard-header">
       <div className="dashboard-header__content">
@@ -9,6 +9,12 @@ export function DashboardHeader() {
         <p className="dashboard-header__description">
           This version is intentionally still in progress. The core tracking flow works, the layout is clean, and follow-up reminders are starting to make the app feel useful.
         </p>
+        <div className="dashboard-header__export">
+          <button disabled={isExportDisabled} onClick={onExport} type="button">
+            Export all applications
+          </button>
+          {exportMessage ? <p role="status">{exportMessage}</p> : null}
+        </div>
       </div>
 
       <div className="dashboard-header__highlights">

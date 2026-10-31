@@ -55,6 +55,39 @@
   line-height: 1.75;
 }
 
+.dashboard-header__export {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.dashboard-header__export button {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--color-primary-dark);
+  background: var(--color-primary);
+  color: #fffdf8;
+  font-weight: 600;
+  transition: background var(--transition-base), opacity var(--transition-base);
+}
+
+.dashboard-header__export button:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+}
+
+.dashboard-header__export button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.dashboard-header__export p {
+  margin: 0;
+  color: var(--color-success);
+  font-size: 0.9rem;
+}
+
 .dashboard-header__highlights {
   display: grid;
   gap: 18px;

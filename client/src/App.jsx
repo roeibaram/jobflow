@@ -7,6 +7,7 @@ import { FilterBar } from './components/FilterBar/FilterBar'
 import { ReminderPanel } from './components/ReminderPanel/ReminderPanel'
 import { StatsBar } from './components/StatsBar/StatsBar'
 import { getApplicationStats, getFilteredApplications, getReminderItems } from './utils/application'
+import { downloadApplicationsCsv } from './utils/exportApplications'
 import './App.css'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [exportMessage, setExportMessage] = useState('')
 
   useEffect(() => {
     loadApplications()
@@ -95,6 +97,17 @@ function App() {
     setStatusFilter('All')
   }
 
+  function handleExportApplications() {
+    try {
+      downloadApplicationsCsv(applications)
+      setErrorMessage('')
+      setExportMessage(`Exported ${applications.length} application${applications.length === 1 ? '' : 's'} to CSV.`)
+    } catch {
+      setExportMessage('')
+      setErrorMessage('Unable to export your applications right now.')
+    }
+  }
+
   const visibleApplications = useMemo(() => {
     return getFilteredApplications(applications, statusFilter, searchQuery, sortMode)
   }, [applications, searchQuery, sortMode, statusFilter])
@@ -109,7 +122,11 @@ function App() {
       <div className="app__glow app__glow--right" />
 
       <div className="app__container">
-        <DashboardHeader />
+        <DashboardHeader
+          exportMessage={exportMessage}
+          isExportDisabled={loading || applications.length === 0}
+          onExport={handleExportApplications}
+        />
         <StatsBar stats={stats} />
 
         <div className="app__dashboard">
@@ -126,7 +143,7 @@ function App() {
               resultCount={visibleApplications.length}
             />
 
-            {errorMessage ? <div className="app__feedback app__feedback--error">{errorMessage}</div> : null}
+            {errorMessage ? <div className="app__feedback app__feedback--error" role="alert">{errorMessage}</div> : null}
 
             {loading ? (
               <div className="app__loading">Loading Jobflow...</div>
