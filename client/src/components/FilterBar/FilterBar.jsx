@@ -22,7 +22,9 @@ export function FilterBar({
       <div className="filter-bar__top-row">
         <div>
           <h2 className="filter-bar__title">Application pipeline</h2>
-          <p className="filter-bar__caption">{resultCount} role{resultCount === 1 ? '' : 's'} visible</p>
+          <p className="filter-bar__caption" role="status" aria-live="polite">
+            {resultCount} role{resultCount === 1 ? '' : 's'} visible
+          </p>
         </div>
 
         <div className="filter-bar__controls">
@@ -50,12 +52,13 @@ export function FilterBar({
         </div>
       </div>
 
-      <div className="filter-bar__chips" aria-label="Filter by status">
+      <div className="filter-bar__chips" role="group" aria-label="Filter by status">
         {statusFilterOptions.map((status) => (
           <button
             key={status}
             type="button"
             className={`filter-bar__chip ${statusFilter === status ? 'filter-bar__chip--active' : ''}`}
+            aria-pressed={statusFilter === status}
             onClick={() => onStatusChange(status)}
           >
             {status}
